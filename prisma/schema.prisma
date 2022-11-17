@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Content {
+  id          Int           @id @default(autoincrement())
+  title       String?       @db.VarChar(100)
+  genre       String?       @db.VarChar(50)
+  dueDate     String?       @db.VarChar(200)
+  location    String?       @db.VarChar(100)
+  actor       String[]      @db.VarChar(400)
+  coupon      Int?
+  vipSeat     Int?
+  rSeat       Int?
+  sSeat       Int?
+  aSeat       Int?
+  host        String?       @db.VarChar(300)
+  callCenter  String?       @db.VarChar(300)
+  ageLimit    String?       @db.VarChar(100)
+  LikeContent LikeContent[]
+}
+
+model LikeContent {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  contentId Int?
+  Content   Content? @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_content_id_fk")
+  User      User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_user_id_fk")
+}
+
+model MyTicket {
+  id         Int   @id @default(autoincrement())
+  userId     Int?
+  yesPoint   Int?
+  saleCoupon Int?
+  booking    Int?
+  User       User? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "myticket_user_id_fk")
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  name        String?       @db.VarChar(30)
+  age         Int?
+  email       String?       @db.VarChar(100)
+  LikeContent LikeContent[]
+  MyTicket    MyTicket[]
+}
