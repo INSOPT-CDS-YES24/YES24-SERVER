@@ -22,24 +22,24 @@ model Content {
   host        String?       @db.VarChar(300)
   callCenter  String?       @db.VarChar(300)
   ageLimit    String?       @db.VarChar(100)
-  LikeContent LikeContent[]
+  likeContent LikeContent[]
 }
 
 model LikeContent {
   id        Int      @id @default(autoincrement())
-  userId    Int?
-  contentId Int?
-  Content   Content? @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_content_id_fk")
-  User      User?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_user_id_fk")
+  userId    Int
+  contentId Int
+  content   Content @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_content_id_fk")
+  user      Use   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_user_id_fk")
 }
-
+ 
 model MyTicket {
   id         Int   @id @default(autoincrement())
-  userId     Int?
+  userId     Int?  @unique
   yesPoint   Int?
   saleCoupon Int?
   booking    Int?
-  User       User? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "myticket_user_id_fk")
+  user       User? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "myticket_user_id_fk")
 }
 
 model User {
@@ -47,6 +47,6 @@ model User {
   name        String?       @db.VarChar(30)
   age         Int?
   email       String?       @db.VarChar(100)
-  LikeContent LikeContent[]
-  MyTicket    MyTicket[]
+  likeContent LikeContent[]
+  myTicket    MyTicket?
 }
