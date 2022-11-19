@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import contentRouter from './ContentRouter';
+import contentRouter from './contentRouter';
 const router: Router = Router();
 
 router.use('/contents', contentRouter);

@@ -26,13 +26,13 @@ model Content {
 }
 
 model LikeContent {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   userId    Int
   contentId Int
   content   Content @relation(fields: [contentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_content_id_fk")
-  user      Use   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_user_id_fk")
+  user      User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "likecontent_user_id_fk")
 }
- 
+
 model MyTicket {
   id         Int   @id @default(autoincrement())
   userId     Int?  @unique
