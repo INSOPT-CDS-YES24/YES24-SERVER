@@ -23,6 +23,7 @@ model Content {
   callCenter  String?       @db.VarChar(300)
   ageLimit    String?       @db.VarChar(100)
   likeContent LikeContent[]
+  user        User[]
 }
 
 model LikeContent {
@@ -49,4 +50,5 @@ model User {
   email       String?       @db.VarChar(100)
   likeContent LikeContent[]
   myTicket    MyTicket?
+  content     Content[]
 }

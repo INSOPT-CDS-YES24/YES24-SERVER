@@ -19,6 +19,7 @@ const getLikeContents = async (req: Request, res: Response) => {
 const getYesPick = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const { genre } = req.query;
+
   if (!userId) {
     return res
       .status(400)
@@ -29,6 +30,7 @@ const getYesPick = async (req: Request, res: Response) => {
     .status(200)
     .json({ status: 200, message: 'YesPick 조회 성공', data });
 };
+
 const getContentsDetails = async (req: Request, res: Response) => {
   const { contentId } = req.params;
 
@@ -41,7 +43,7 @@ const getContentsDetails = async (req: Request, res: Response) => {
   const data = await contentService.getContentsDetails(+contentId);
   return res
     .status(200)
-    .json({ status: 200, message: '상세정보 조회 성공', data});
+    .json({ status: 200, message: '상세정보 조회 성공', data });
 };
 
 const contentController = { getLikeContents, getYesPick, getContentsDetails };

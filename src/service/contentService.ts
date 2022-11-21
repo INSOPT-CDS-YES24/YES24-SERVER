@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -15,11 +16,12 @@ const getLikeContents = async (userId: number) => {
       },
     },
   });
+  console.log(typeof data);
   return data;
 };
 
 const getYesPick = async (userId: number, genre: string) => {
-  const data = await prisma.likeContent.findMany({
+  let data = await prisma.likeContent.findMany({
     where: {
       userId,
       content: {
@@ -31,13 +33,19 @@ const getYesPick = async (userId: number, genre: string) => {
         select: {
           title: true,
           genre: true,
+          dueDate: true,
         },
       },
     },
   });
-  return data;
+  let dataArray = [];
+  data = { ...data };
+  for (let i = 0; i < Object.keys(data).length; i++) {
+    dataArray.push(data[i].content);
+  }
+  const randomData = _.shuffle(dataArray);
+  return randomData;
 };
-const contentService = { getLikeContents, getYesPick };
 
 const getContentsDetails = async (contentId: number) => {
   const data = await prisma.content.findUnique({
@@ -47,7 +55,7 @@ const getContentsDetails = async (contentId: number) => {
   });
 
   return data;
-}
+};
 
 const contentService = { getLikeContents, getYesPick, getContentsDetails };
 
