@@ -35,15 +35,30 @@ const getYesPick = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const { genre } = req.query;
 
-  if (!userId) {
-    return res
-      .status(400)
-      .json({ status: 400, message: '필요한 값이 없습니다.' });
+  let type: 'genre' | null;
+  if (genre) {
+    type = 'genre';
+  } else {
+    type = null;
   }
-  const data = await contentService.getYesPick(+userId, genre as string);
-  return res
-    .status(200)
-    .json({ status: 200, message: 'YesPick 조회 성공', data });
+
+  if (!userId) {
+    return res.status(400).json({ status: 400, message: '콘텐츠 조회 실패' });
+  }
+  switch (type) {
+    case 'genre': {
+      const data = await contentService.getYesPick(+userId, genre as string);
+      return res
+        .status(200)
+        .json({ status: 200, message: 'YesPick 조회 성공', data });
+    }
+    case null: {
+      const data = await contentService.getRecentContents(+userId);
+      return res
+        .status(200)
+        .json({ status: 200, message: '최근 본 콘텐츠 조회 성공', data });
+    }
+  }
 };
 
 const contentController = { getLikeContents, getContentsDetails, getYesPick };
