@@ -48,12 +48,22 @@ const getYesPick = async (req: Request, res: Response) => {
   switch (type) {
     case 'genre': {
       const data = await contentService.getYesPick(+userId, genre as string);
+      if (data.length == 0) {
+        return res
+          .status(400)
+          .json({ status: 400, message: '콘텐츠 조회 실패' });
+      }
       return res
         .status(200)
-        .json({ status: 200, message: 'YesPick 조회 성공', data });
+        .json({ status: 200, message: '콘텐츠 조회 성공', data });
     }
     case null: {
       const data = await contentService.getRecentContents(+userId);
+      if (data.length == 0) {
+        return res
+          .status(400)
+          .json({ status: 400, message: '최근 본 콘텐츠 조회 실패' });
+      }
       return res
         .status(200)
         .json({ status: 200, message: '최근 본 콘텐츠 조회 성공', data });
