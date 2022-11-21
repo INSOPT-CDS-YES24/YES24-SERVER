@@ -7,7 +7,7 @@ const getLikeContents = async (userId: number) => {
       userId,
     },
     select: {
-      Content: {
+      content: {
         select: {
           title: true,
           genre: true,
@@ -17,6 +17,27 @@ const getLikeContents = async (userId: number) => {
   });
   return data;
 };
+
+const getYesPick = async (userId: number, genre: string) => {
+  const data = await prisma.likeContent.findMany({
+    where: {
+      userId,
+      content: {
+        genre,
+      },
+    },
+    select: {
+      content: {
+        select: {
+          title: true,
+          genre: true,
+        },
+      },
+    },
+  });
+  return data;
+};
+const contentService = { getLikeContents, getYesPick };
 
 const getContentsDetails = async (contentId: number) => {
   const data = await prisma.content.findUnique({
@@ -28,6 +49,6 @@ const getContentsDetails = async (contentId: number) => {
   return data;
 }
 
-const contentService = { getLikeContents, getContentsDetails };
+const contentService = { getLikeContents, getYesPick, getContentsDetails };
 
 export default contentService;
