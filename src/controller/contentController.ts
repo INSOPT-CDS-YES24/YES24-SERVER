@@ -16,6 +16,21 @@ const getLikeContents = async (req: Request, res: Response) => {
     .json({ status: 200, message: '관심공연 조회 성공', data });
 };
 
-const contentController = { getLikeContents };
+const getContentsDetails = async (req: Request, res: Response) => {
+  const { contentId } = req.params;
+
+  if (!contentId) {
+    return res
+      .status(400)
+      .json({ status: 400, message: '필요한 값이 없습니다.' });
+  }
+
+  const data = await contentService.getContentsDetails(+contentId);
+  return res
+    .status(200)
+    .json({ status: 200, message: '상세정보 조회 성공', data});
+};
+
+const contentController = { getLikeContents, getContentsDetails };
 
 export { contentController };
