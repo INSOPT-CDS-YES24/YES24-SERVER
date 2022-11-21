@@ -7,7 +7,7 @@ const getLikeContents = async (userId: number) => {
       userId,
     },
     select: {
-      content: {
+      Content: {
         select: {
           title: true,
           genre: true,
