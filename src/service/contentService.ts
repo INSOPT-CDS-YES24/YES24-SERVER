@@ -17,6 +17,17 @@ const getLikeContents = async (userId: number) => {
   });
   return data;
 };
-const contentService = { getLikeContents };
+
+const getContentsDetails = async (contentId: number) => {
+  const data = await prisma.content.findUnique({
+    where: {
+      id: contentId,
+    },
+  });
+
+  return data;
+}
+
+const contentService = { getLikeContents, getContentsDetails };
 
 export default contentService;
