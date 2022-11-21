@@ -20,6 +20,16 @@ const getLikeContents = async (userId: number) => {
   return data;
 };
 
+const getContentsDetails = async (contentId: number) => {
+  const data = await prisma.content.findUnique({
+    where: {
+      id: contentId,
+    },
+  });
+
+  return data;
+};
+
 const getYesPick = async (userId: number, genre: string) => {
   let data = await prisma.likeContent.findMany({
     where: {
@@ -47,16 +57,6 @@ const getYesPick = async (userId: number, genre: string) => {
   return randomData;
 };
 
-const getContentsDetails = async (contentId: number) => {
-  const data = await prisma.content.findUnique({
-    where: {
-      id: contentId,
-    },
-  });
-
-  return data;
-};
-
-const contentService = { getLikeContents, getYesPick, getContentsDetails };
+const contentService = { getLikeContents, getContentsDetails, getYesPick };
 
 export default contentService;
