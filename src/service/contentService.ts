@@ -56,33 +56,10 @@ const getYesPick = async (userId: number, genre: string) => {
   return randomData;
 };
 
-const getRecentContents = async (userId: number) => {
-  let data = await prisma.likeContent.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      content: {
-        select: {
-          title: true,
-        },
-      },
-    },
-  });
-  let dataArray = [];
-  data = { ...data };
-  for (let i = 0; i < Object.keys(data).length; i++) {
-    dataArray.push(data[i].content);
-  }
-  const randomData = _.shuffle(dataArray);
-  return randomData;
-};
-
 const contentService = {
   getLikeContents,
   getContentsDetails,
   getYesPick,
-  getRecentContents,
 };
 
 export default contentService;
