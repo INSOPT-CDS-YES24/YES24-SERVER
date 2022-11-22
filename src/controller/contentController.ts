@@ -5,9 +5,7 @@ const getLikeContents = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   if (!userId) {
-    return res
-      .status(400)
-      .json({ status: 400, message: '필요한 값이 없습니다.' });
+    return res.status(400).json({ status: 400, message: '관심공연 조회 실패' });
   }
 
   const data = await contentService.getLikeContents(+userId);
@@ -20,9 +18,7 @@ const getContentsDetails = async (req: Request, res: Response) => {
   const { contentId } = req.params;
 
   if (!contentId) {
-    return res
-      .status(400)
-      .json({ status: 400, message: '필요한 값이 없습니다.' });
+    return res.status(400).json({ status: 400, message: '관심공연 조회 실패' });
   }
 
   const data = await contentService.getContentsDetails(+contentId);
