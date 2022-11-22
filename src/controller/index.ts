@@ -1,3 +1,3 @@
-import { contentController } from './contentController';
-export { contentController };
-export { default as ticketController } from "./ticketController";
+import contentController from './contentController';
+import ticketController from './ticketController';
+export { contentController, ticketController };
