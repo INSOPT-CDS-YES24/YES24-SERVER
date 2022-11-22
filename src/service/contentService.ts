@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const getLikeContents = async (userId: number) => {
-  const data = await prisma.likeContent.findMany({
+  let data = await prisma.likeContent.findMany({
     where: {
       userId,
     },
@@ -16,7 +16,12 @@ const getLikeContents = async (userId: number) => {
       },
     },
   });
-  return data;
+  let dataArray = [];
+  data = { ...data };
+  for (let i = 0; i < Object.keys(data).length; i++) {
+    dataArray.push(data[i].content);
+  }
+  return dataArray;
 };
 
 const getContentsDetails = async (contentId: number) => {
