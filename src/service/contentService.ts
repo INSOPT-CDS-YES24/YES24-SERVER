@@ -1,9 +1,12 @@
+import { contentResponseDto } from './../interface/ContentResponseDto';
 import _ from 'lodash';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-const getLikeContents = async (userId: number) => {
-  let data = await prisma.likeContent.findMany({
+const getLikeContents = async (
+  userId: number,
+): Promise<contentResponseDto[]> => {
+  const likeContents = await prisma.likeContent.findMany({
     where: {
       userId,
     },
@@ -16,12 +19,16 @@ const getLikeContents = async (userId: number) => {
       },
     },
   });
-  let dataArray = [];
-  data = { ...data };
-  for (let i = 0; i < Object.keys(data).length; i++) {
-    dataArray.push(data[i].content);
-  }
-  return dataArray;
+  const data = await Promise.all(
+    likeContents.map((likeContent: any) => {
+      const result = {
+        title: likeContent.content.title,
+        genre: likeContent.content.genre,
+      };
+      return result;
+    }),
+  );
+  return data;
 };
 
 const getContentsDetails = async (contentId: number) => {
@@ -34,8 +41,11 @@ const getContentsDetails = async (contentId: number) => {
   return data;
 };
 
-const getYesPick = async (userId: number, genre: string) => {
-  let data = await prisma.likeContent.findMany({
+const getYesPick = async (
+  userId: number,
+  genre: string,
+): Promise<contentResponseDto[]> => {
+  const yesPicks = await prisma.likeContent.findMany({
     where: {
       userId,
       content: {
@@ -52,12 +62,17 @@ const getYesPick = async (userId: number, genre: string) => {
       },
     },
   });
-  let dataArray = [];
-  data = { ...data };
-  for (let i = 0; i < Object.keys(data).length; i++) {
-    dataArray.push(data[i].content);
-  }
-  const randomData = _.shuffle(dataArray);
+  const data = await Promise.all(
+    yesPicks.map((yesPick: any) => {
+      const result = {
+        title: yesPick.content.title,
+        genre: yesPick.content.genre,
+        dueDate: yesPick.content.dueDate,
+      };
+      return result;
+    }),
+  );
+  const randomData = _.shuffle(data);
   return randomData;
 };
 
